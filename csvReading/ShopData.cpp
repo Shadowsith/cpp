@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <exception>
+#include <cstdlib>
 #include <vector>
 #include "ShopData.h"
 
@@ -13,7 +15,18 @@ ShopData::ShopData(std::string csvLine){
         if(csvLine.at(i) == ';'){
             csvCol.push_back(i); 
         }
+    }       
+    if(csvCol.size() != 2){
+        try{
+            std::cout << "Input .csv file exception at Linevalue: "  << csvLine << std::endl;
+            std::cout << "The csv-Input ist not in form of:  ID;TENTANT;SALES" << std::endl;
+            std::cout << "Proof your csv File before starting the program again" << std::endl;
+            exit(1);
+        }
+        catch (int e){
+        }
     }
+
     std::string shopNum = csvLine.substr(0,csvCol[0]);
     std::string shopTenant = csvLine.substr(csvCol[0]+1,csvCol[1]-2);
     std::string shopSales = csvLine.substr(csvCol[1]+1,csvLine.length());
