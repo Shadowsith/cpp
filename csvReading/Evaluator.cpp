@@ -80,6 +80,7 @@ void Evaluator::evaluateData(){
     std::cout << "Shopauswertung:" << std::endl;
     std::cout << "Minimaler Umsatz:" << min.getShop() << "|" << min.getTenant() << "|" << min.getSales() << std::endl;
     std::cout << "Maximaler Umsatz:" << max.getShop() << "|" << max.getTenant() << "|" << max.getSales() << std::endl;
+    std::cout << std::endl;
 }
 
 void Evaluator::printShopList(){
