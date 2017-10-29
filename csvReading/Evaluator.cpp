@@ -16,7 +16,33 @@ Evaluator::Evaluator(std::string shopListFilename){
         }
         i++;
     }
+}
 
+double Evaluator::getSumShop1(){
+    return this->sumShop1;
+}
+
+double Evaluator::getSumShop2(){
+    return this->sumShop2;
+}
+
+double Evaluator::getSumShop3(){
+    return this->sumShop3;
+}
+
+double Evaluator::getSumAll(){
+    return this->sumAll;
+}
+
+ShopData Evaluator::getMax(){
+    return this->max;
+}
+
+ShopData Evaluator::getMin(){
+    return this->min;
+}
+
+void Evaluator::evaluateData(){
     // Now Evaluate all usable sale data from shop_list
     for(int i = 0; i < shop_list.size(); i++){
         // For shops with id 1
@@ -45,42 +71,6 @@ Evaluator::Evaluator(std::string shopListFilename){
             this->min = shop_list[i];
         }
     }
-}
-
-double Evaluator::getSumShop1(){
-    return this->sumShop1;
-}
-
-double Evaluator::getSumShop2(){
-    return this->sumShop2;
-}
-
-double Evaluator::getSumShop3(){
-    return this->sumShop3;
-}
-
-double Evaluator::getSumAll(){
-    return this->sumAll;
-}
-
-ShopData Evaluator::getMax(){
-    return this->max;
-}
-
-ShopData Evaluator::getMin(){
-    return this->min;
-}
-
-void Evaluator::evaluateData(){
-    std::cout << "Umsatzauswertung für:" << std::endl;
-    std::cout << "Shop Id 1:\t" << getSumShop1() << std::endl;
-    std::cout << "Shop Id 2:\t" << getSumShop2() << std::endl;
-    std::cout << "Shop Id 3:\t" << getSumShop3() << std::endl;
-    std::cout << "Total:\t" << getSumAll() << std::endl;
-    std::cout << "Shopauswertung:" << std::endl;
-    std::cout << "Minimaler Umsatz:" << min.getShop() << "|" << min.getTenant() << "|" << min.getSales() << std::endl;
-    std::cout << "Maximaler Umsatz:" << max.getShop() << "|" << max.getTenant() << "|" << max.getSales() << std::endl;
-    std::cout << std::endl;
 }
 
 void Evaluator::printShopList(){
