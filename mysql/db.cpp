@@ -11,6 +11,7 @@
 #include <termios.h>
 #include <stdio.h>
 
+// not in use yet
 class User {
     private:
         int id;
@@ -19,22 +20,24 @@ class User {
 };
 
 int main(void){
-    sql::mysql::MySQL_Driver *driver;
-    sql::Connection *con;
-    sql::Statement *stmt;
-    sql::ResultSet *res;
+
+    sql::mysql::MySQL_Driver *driver; // need to get mysql driver
+    sql::Connection *con; // handels SQL Connection
+    sql::Statement *stmt; // handels SQL Statements (UPDATE...) 
+    sql::ResultSet *res;  // handels result of SELECT statements 
+
     std::string username;
     std::string password;
     
     driver = sql::mysql::get_mysql_driver_instance();
 
 
-
+    //User Connection
     std::cout << "Enter username: ";
     std::cin >> username;
     std::cout << "Enter password: ";
     std::cin >> password;
-    pu
+
     con = driver->connect("localhost:3306",username,password);
 
     stmt = con->createStatement();
@@ -51,8 +54,10 @@ int main(void){
     }
 
 
-
+    // delete all before program end
+    // prevent memory overflow on microcontroler
     delete res;
     delete stmt;
     delete con;
+    return 0;
 }
