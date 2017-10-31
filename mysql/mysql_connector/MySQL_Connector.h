@@ -26,7 +26,7 @@ class MySQL_Connector{
         MySQL_Connector();
         MySQL_Connector(std::string server);
         MySQL_Connector(std::string server, std::string username);
-        ~MySQL_Connector();
+        //~MySQL_Connector();
         void setScheme(std::string scheme);
         void dropCreate(std::string table, std::string values);
         void create(std::string table, std::string values); //only if not exists

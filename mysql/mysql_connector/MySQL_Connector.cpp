@@ -9,7 +9,11 @@ MySQL_Connector::MySQL_Connector(){
     std::cout << "Enter password";
     std::cin >> this->password; // must be make saver
 
+    this->driver = sql::mysql::get_mysql_driver_instance();
     this->con = this->driver->connect(this->server,this->username,this->password);
+
+    this->stmt = NULL;
+    this->res = NULL;
 }
 
 MySQL_Connector::MySQL_Connector(std::string server){
@@ -20,6 +24,7 @@ MySQL_Connector::MySQL_Connector(std::string server){
     std::cout << "Enter password";
     std::cin >> this->password; // must be make saver
 
+    this->driver = sql::mysql::get_mysql_driver_instance();
     this->con = this->driver->connect(this->server,this->username,this->password);
 }
 
@@ -27,10 +32,14 @@ MySQL_Connector::MySQL_Connector(std::string server, std::string username){
     std::cout << "\nConnecting to Database at: " << server << std::endl;
     this->server = server;
     this->username = username;
-    std::cout << "Hello " << username << " enter password";
+    std::cout << "Hello " << username << " enter password ";
     std::cin >> this->password; // must be make saver
 
+    this->driver = sql::mysql::get_mysql_driver_instance();
     this->con = this->driver->connect(this->server,this->username,this->password);
+
+    this->stmt = NULL;
+    this->res = NULL;
 }
 
 void MySQL_Connector::setScheme(std::string scheme){
@@ -42,12 +51,21 @@ void MySQL_Connector::setScheme(std::string scheme){
 void MySQL_Connector::dropCreate(std::string table, std::string values){
     this->stmt->execute("DROP TABLE IF EXISTS " + table);
     this->stmt->execute("CREATE TABLE " + table + "(" + values + ")");
-
-
 }
 
 void MySQL_Connector::deleteConnetor(){
-    delete this->con;
-    delete this->stmt;
-    delete this->res;
+    if (this->con != NULL)
+        delete this->con;
+    if (this->stmt != NULL)
+        delete this->stmt;
+    if (this->res != NULL)
+        delete this->res;
+}
+
+int main(void){
+
+    MySQL_Connector connect("localhost:3306","shadowsith");
+    connect.setScheme("test_scheme");
+    connect.dropCreate("new_test","id INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, PRIMARY KEY (id)");
+    connect.deleteConnetor();
 }

@@ -40,7 +40,9 @@ int main(void){
 
     con = driver->connect("localhost:3306",username,password);
 
+
     stmt = con->createStatement();
+    /*
     stmt->execute("USE test_scheme");
     //stmt->execute("DROP TABLE IF EXISTS test");
     //stmt->execute("CREATE TABLE test(id INT, label CHAR(1))");
@@ -52,11 +54,12 @@ int main(void){
         std::cout << "Firstname = " << res->getString("firstname") << std::endl;
         std::cout << "Lastname = " << res->getString("lastname") << std::endl;
     }
+    */
 
 
     // delete all before program end
     // prevent memory overflow on microcontroler
-    delete res;
+    //delete res;
     delete stmt;
     delete con;
     return 0;
