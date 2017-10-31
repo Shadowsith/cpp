@@ -1,4 +1,5 @@
 #include "MySQL_Connector.h"
+#include "hide_input.h"
 
 MySQL_Connector::MySQL_Connector(){
     std::cout << "\nConnecting to Database" << std::endl;
@@ -6,14 +7,16 @@ MySQL_Connector::MySQL_Connector(){
     std::cin >> this->server;
     std::cout << "Enter username:";
     std::cin >> this->username;
-    std::cout << "Enter password";
-    std::cin >> this->password; // must be make saver
+    std::cout << "Enter password ";
+    this->password = hcin::hide(); //see hide_input.cpp
 
     this->driver = sql::mysql::get_mysql_driver_instance();
     this->con = this->driver->connect(this->server,this->username,this->password);
-
-    this->stmt = NULL;
+    // not sure if init stmt here could make trouble in some situations
+    // if it makes trouble, I must add this two any single method, which it needs
+    this->stmt = this->con->createStatement(); 
     this->res = NULL;
+    this->res_meta = NULL;
 }
 
 MySQL_Connector::MySQL_Connector(std::string server){
@@ -21,11 +24,14 @@ MySQL_Connector::MySQL_Connector(std::string server){
     this->server = server;
     std::cout << "Enter username:";
     std::cin >> this->username;
-    std::cout << "Enter password";
-    std::cin >> this->password; // must be make saver
+    std::cout << "Enter password ";
+    this->password = hcin::hide();
 
     this->driver = sql::mysql::get_mysql_driver_instance();
     this->con = this->driver->connect(this->server,this->username,this->password);
+    this->stmt = this->con->createStatement();
+    this->res = NULL;
+    this->res_meta = NULL;
 }
 
 MySQL_Connector::MySQL_Connector(std::string server, std::string username){
@@ -33,39 +39,133 @@ MySQL_Connector::MySQL_Connector(std::string server, std::string username){
     this->server = server;
     this->username = username;
     std::cout << "Hello " << username << " enter password ";
-    std::cin >> this->password; // must be make saver
+    this->password = hcin::hide();
 
     this->driver = sql::mysql::get_mysql_driver_instance();
     this->con = this->driver->connect(this->server,this->username,this->password);
-
-    this->stmt = NULL;
-    this->res = NULL;
-}
-
-void MySQL_Connector::setScheme(std::string scheme){
-    this->scheme = scheme;
     this->stmt = this->con->createStatement();
-    this->stmt->execute("USE " + this->scheme);
+    this->res = NULL;
+    this->res_meta = NULL;
 }
 
-void MySQL_Connector::dropCreate(std::string table, std::string values){
-    this->stmt->execute("DROP TABLE IF EXISTS " + table);
-    this->stmt->execute("CREATE TABLE " + table + "(" + values + ")");
+void MySQL_Connector::createSchema(std::string schema){
+    this->stmt->execute("CREATE SCHEMA IF NOT EXISTS " + schema);
 }
+
+void MySQL_Connector::dropSchema(std::string schema){
+    this->stmt->execute("DROP SCHEMA IF EXISTS " + schema);
+}
+
+// only alias name for createSchema
+void MySQL_Connector::createDatabase(std::string database){
+    MySQL_Connector::createSchema(database); 
+}
+
+void MySQL_Connector::dropDatabase(std::string database){
+    MySQL_Connector::dropSchema(database);
+}
+
+void MySQL_Connector::setSchema(std::string schema){
+    this->schema = schema;
+    /*
+    older solution, but it gives a native one 
+    this->stmt = this->con->createStatement();
+    this->stmt->execute("USE " + this->schema);
+    */
+    this->con->setSchema(this->schema);
+}
+
+void MySQL_Connector::dropTable(std::string table){
+    this->stmt->execute("DROP TABLE IF EXISTS " + table);
+}
+
+void MySQL_Connector::dropRecreateTable(std::string table, std::string columns){
+    this->stmt->execute("DROP TABLE IF EXISTS " + table);
+    this->stmt->execute("CREATE TABLE " + table + "(" + columns + ")");
+}
+
+void MySQL_Connector::createTable(std::string querry){
+    this->stmt->execute(querry);
+}
+
+void MySQL_Connector::createTable(std::string table, std::string columns){
+    this->stmt->execute("CREATE TABLE IF NOT EXISTS " + table + "(" + columns + ")");
+}
+
+void MySQL_Connector::insert(std::string querry){
+    this->stmt->execute(querry);
+}
+
+void MySQL_Connector::insert(std::string table, std::string columns, std::string values){
+    this->stmt->execute("INSERT INTO " + table + "(" + columns + ")" + " VALUES (" + values + ")");
+}
+
+void MySQL_Connector::update(std::string querry){
+    this->stmt->executeUpdate(querry);
+}
+
+void MySQL_Connector::update(std::string table, std::string set_, std::string where){
+    this->stmt->executeUpdate("UPDATE " + table + " SET " + set_ + " WHERE " + where);
+}
+
+void MySQL_Connector::select(std::string querry){
+    //this->stmt = this->con->createStatement();
+    this->res = this->stmt->executeQuery(querry);
+    this->res_meta = this->res->getMetaData();
+    while(this->res->next()){
+        for(int i = 1; i <= this->res_meta->getColumnCount(); i++){
+            this->selector.push_back(this->res->getString(i));
+        }
+    }
+}
+
+void MySQL_Connector::select(std::string columns, std::string from){
+    //this->stmt = this->con->createStatement();
+    this->res = this->stmt->executeQuery("SELECT " + columns + " FROM " + from);
+    this->res_meta = this->res->getMetaData();
+    while(this->res->next()){
+        for(int i = 1; i <= this->res_meta->getColumnCount(); i++){
+            this->selector.push_back(this->res->getString(i));
+        }
+    }
+}
+
+void MySQL_Connector::select(std::string columns, std::string from, std::string where){
+    //this->stmt = this->con->createStatement();
+    this->res = this->stmt->executeQuery("SELECT " + columns + " FROM " + from + " WHERE " + where);
+    this->res_meta = this->res->getMetaData();
+    while(this->res->next()){
+        for(int i = 1; i <= this->res_meta->getColumnCount(); i++){
+            this->selector.push_back(this->res->getString(i));
+        }
+    }
+}
+
 
 void MySQL_Connector::deleteConnetor(){
-    if (this->con != NULL)
-        delete this->con;
-    if (this->stmt != NULL)
-        delete this->stmt;
-    if (this->res != NULL)
-        delete this->res;
+    delete this->con;
+    delete this->stmt;
+    delete this->res;
 }
 
 int main(void){
 
     MySQL_Connector connect("localhost:3306","shadowsith");
-    connect.setScheme("test_scheme");
-    connect.dropCreate("new_test","id INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, PRIMARY KEY (id)");
+    //connect.setScheme("test_scheme");
+    //connect.dropCreate("new_test","id INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, PRIMARY KEY (id)");
+    
+    //connect.createTable("test_scheme.bla","id INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, PRIMARY KEY (id)");
+    //
+    //connect.createDatabase("hello");
+    connect.setSchema("test_scheme");
+    //connect.createTable("new","num INT NOT NULL, text VARCHAR(30) NOT NULL, PRIMARY KEY (num)");
+    //connect.insert("new","num, text","'1', 'Arschloch'");
+    //connect.update("new","text = 'Nutte'","num = 1");
+    //connect.select("SELECT * FROM user WHERE id >= 1");
+    connect.select("*","user","id >= 1 AND gender = 1");
     connect.deleteConnetor();
+    for(int i = 0; i < connect.selector.size(); i++){
+        std::cout << connect.selector[i] << std::endl;
+    }
+    connect.selector.clear();
 }
