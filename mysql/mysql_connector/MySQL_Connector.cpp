@@ -16,7 +16,6 @@ MySQL_Connector::MySQL_Connector(){
     // if it makes trouble, I must add this two any single method, which it needs
     this->stmt = this->con->createStatement(); 
     this->res = NULL;
-    this->res_meta = NULL;
 }
 
 MySQL_Connector::MySQL_Connector(std::string server){
@@ -31,7 +30,6 @@ MySQL_Connector::MySQL_Connector(std::string server){
     this->con = this->driver->connect(this->server,this->username,this->password);
     this->stmt = this->con->createStatement();
     this->res = NULL;
-    this->res_meta = NULL;
 }
 
 MySQL_Connector::MySQL_Connector(std::string server, std::string username){
@@ -45,8 +43,26 @@ MySQL_Connector::MySQL_Connector(std::string server, std::string username){
     this->con = this->driver->connect(this->server,this->username,this->password);
     this->stmt = this->con->createStatement();
     this->res = NULL;
-    this->res_meta = NULL;
 }
+
+// use this carfully, password could be readed from object dump
+MySQL_Connector::MySQL_Connector(std::string server, std::string username, std::string password){
+    this->server = server;
+    this->username = username;
+    this->password = password;
+
+    this->driver = sql::mysql::get_mysql_driver_instance();
+    this->con = this->driver->connect(this->server,this->username,this->password);
+    this->stmt = this->con->createStatement();
+}
+
+/*
+// use this for pointer|dynamic allocated objects
+MySQL_Connector::~MySQL_Connector(){
+    delete this->con;
+    delete this->stmt;
+    delete this->res;
+}*/
 
 void MySQL_Connector::createSchema(std::string schema){
     this->stmt->execute("CREATE SCHEMA IF NOT EXISTS " + schema);
@@ -141,31 +157,76 @@ void MySQL_Connector::select(std::string columns, std::string from, std::string 
     }
 }
 
+std::vector<std::string> MySQL_Connector::resSelect(std::string querry){
+    std::vector<std::string> vec;
+    this->res = this->stmt->executeQuery(querry);
+    this->res_meta = this->res->getMetaData();
+    while(this->res->next()){
+        for(int i = 1; i <= this->res_meta->getColumnCount(); i++){
+            vec.push_back(this->res->getString(i));
+        }
+    }
+    return vec;
+}
 
+
+std::vector<std::string> MySQL_Connector::resSelect(std::string columns, std::string from){
+    std::vector<std::string> vec;
+    this->res = this->stmt->executeQuery("SELECT " + columns + " FROM " + from);
+    this->res_meta = this->res->getMetaData();
+    while(this->res->next()){
+        for(int i = 1; i <= this->res_meta->getColumnCount(); i++){
+            vec.push_back(this->res->getString(i));
+        }
+    }
+    return vec;
+}
+
+std::vector<std::string> MySQL_Connector::resSelect(std::string columns, std::string from, std::string where){
+    std::vector<std::string> vec;
+    this->res = this->stmt->executeQuery("SELECT " + columns + " FROM " + from + " WHERE " + where);
+    this->res_meta = this->res->getMetaData();
+    while(this->res->next()){
+        for(int i = 1; i <= this->res_meta->getColumnCount(); i++){
+            vec.push_back(this->res->getString(i));
+        }
+    }
+    return vec;
+}
+
+//use this for non pointer objects
 void MySQL_Connector::deleteConnetor(){
     delete this->con;
     delete this->stmt;
     delete this->res;
 }
 
+/*
+
 int main(void){
 
     MySQL_Connector connect("localhost:3306","shadowsith");
-    //connect.setScheme("test_scheme");
-    //connect.dropCreate("new_test","id INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, PRIMARY KEY (id)");
-    
-    //connect.createTable("test_scheme.bla","id INT NOT NULL AUTO_INCREMENT, name VARCHAR(40) NOT NULL, PRIMARY KEY (id)");
-    //
-    //connect.createDatabase("hello");
-    connect.setSchema("test_scheme");
-    //connect.createTable("new","num INT NOT NULL, text VARCHAR(30) NOT NULL, PRIMARY KEY (num)");
-    //connect.insert("new","num, text","'1', 'Arschloch'");
-    //connect.update("new","text = 'Nutte'","num = 1");
-    //connect.select("SELECT * FROM user WHERE id >= 1");
-    connect.select("*","user","id >= 1 AND gender = 1");
-    connect.deleteConnetor();
-    for(int i = 0; i < connect.selector.size(); i++){
-        std::cout << connect.selector[i] << std::endl;
+    connect.setSchema("hello");
+    connect.dropTable("neon");
+    connect.createTable("neon","id INT AUTO_INCREMENT, state VARCHAR(40), city VARCHAR(40), PRIMARY KEY(id)");
+    connect.insert("neon","state, city","'Deutschland', 'Munich'");
+    connect.insert("neon","state, city","'Deutschland', 'Berlin'");
+    connect.insert("neon","state, city","'Deutschland', 'Hamburg'");
+    connect.insert("neon","state, city","'United Kingdom', 'London'");
+    connect.insert("neon","state, city","'United Kingdom', 'Bristol'");
+    connect.insert("neon","state, city","'USA', 'New York City'");
+    connect.insert("neon","state, city","'USA', 'Chicago'");
+    connect.insert("neon","state, city","'USA', 'Phoenix'");
+    //connect.select("id, state, city","neon","state LIKE 'Deutschland'");
+    connect.select("*","neon");
+    int i = 0;
+    while(!(i >= connect.selector.size())){
+        std::cout << "Id: " << connect.selector[i] << "\t" << "State: " << connect.selector[i+1] << "\t" << connect.selector[i+2] << std::endl; 
+        i = i+3;
+        //if( i >= (connect.selector.size()))
+            //break;
     }
-    connect.selector.clear();
+    connect.deleteConnetor();
+    return 0;
 }
+*/

@@ -28,7 +28,8 @@ class MySQL_Connector{
         MySQL_Connector();
         MySQL_Connector(std::string server);
         MySQL_Connector(std::string server, std::string username);
-        //~MySQL_Connector();
+        MySQL_Connector(std::string server, std::string username, std::string password);
+        //virtual ~MySQL_Connector();
         void createSchema(std::string schema);
         void dropSchema(std::string schema);
         inline void createDatabase(std::string database); //alias of createSchema
@@ -41,14 +42,16 @@ class MySQL_Connector{
         void insert(std::string querry);
         void insert(std::string table, std::string columns, std::string values);
         void insert(std::string table, std::vector<std::string> rows, std::vector<std::string> values);
+        void update(std::string querry);
+        void update(std::string table, std::string set_, std::string where);
         void select(std::string querry);
         void select(std::string columns, std::string from);
         void select(std::string columns, std::string from, std::string where);
-        void update(std::string querry);
-        void update(std::string table, std::string set_, std::string where);
+        std::vector<std::string> resSelect(std::string querry);
+        std::vector<std::string> resSelect(std::string columns, std::string from);
+        std::vector<std::string> resSelect(std::string columns, std::string from, std::string where);
         void deleteConnetor();
         std::vector<std::string> selector;
-
 };
 
 
