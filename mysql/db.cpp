@@ -42,19 +42,19 @@ int main(void){
 
 
     stmt = con->createStatement();
-    /*
+    
     stmt->execute("USE test_scheme");
     //stmt->execute("DROP TABLE IF EXISTS test");
     //stmt->execute("CREATE TABLE test(id INT, label CHAR(1))");
     //stmt->execute("INSERT INTO test(id, label) VALUES (1, 'a')");
-    res = stmt->executeQuery("SELECT id, firstname, lastname FROM user WHERE id = 4"); 
+    res = stmt->executeQuery("SELECT * FROM user"); 
     while (res->next()){
 
         std::cout << "Id = " << res->getInt(1) << std::endl;
         std::cout << "Firstname = " << res->getString("firstname") << std::endl;
         std::cout << "Lastname = " << res->getString("lastname") << std::endl;
     }
-    */
+    
 
 
     // delete all before program end
