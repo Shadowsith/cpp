@@ -1,94 +1,370 @@
 #include "String.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
+#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <vector>
 #include <iterator>
 
-bool String::equals(std::string &str1, std::string &str2){
-    if (str1.compare(str2) == 0)
+//constructors--------------------------
+String::String(std::string str){
+    m_str = str;
+}
+
+String::String(const char* c){
+    std::string convert(c);
+    m_str = convert;
+}
+
+String::String(std::vector<std::string> strvec){
+    for(int i = 0; i < strvec.size(); i++){
+        m_str += strvec[i];
+    }
+}
+
+String::String(std::vector<char> cvec){
+    for(int i = 0; i < cvec.size(); i++){
+        m_str += cvec[i];
+    }
+}
+
+String::String(short num){
+    try{
+        m_str = boost::lexical_cast<std::string>(num);
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
+    }
+}
+
+String::String(int num){
+    try{
+        m_str = boost::lexical_cast<std::string>(num);
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
+    }
+}
+
+String::String(long num){
+    try{
+        m_str = boost::lexical_cast<std::string>(num);
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
+    }
+}
+
+String::String(float num){
+    try{
+        m_str = boost::lexical_cast<std::string>(num);
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
+    }
+}
+
+String::String(double num){
+    try{
+        m_str = boost::lexical_cast<std::string>(num);
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
+    }
+}
+
+//operators----------------------------
+
+// save object directly to std::string working!
+String::operator std::string() const{
+    return m_str;
+}
+
+// testing... working!
+String& String::operator= (std::string str){
+    m_str = str;
+}
+
+// working!
+String& String::operator= (const char* c){
+    std::string convert(c);
+    m_str = convert;
+}
+
+bool operator== (const String &S1, const String &S2){
+
+    if(S1.m_str.compare(S2.m_str) == 0){
+        return true;           
+    }
+    else{
+        return false;
+    }
+}
+
+bool operator== (const std::string str, const String &S){
+
+    if(str.compare(S.m_str) == 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool operator== (const String &S, const std::string str){
+    
+    if(S.m_str.compare(str) == 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+String operator+ (const String &S1, const String &S2){
+    std::string res = S1.m_str + S2.m_str; 
+    return res;
+}
+
+String operator+ (std::string str, const String &S){
+    std::string res = str + S.m_str;
+    return res;
+}
+
+String operator+ (const String &S, std::string str){
+    std::string res = S.m_str + str;
+    return res;
+}
+
+// shows member m_str for std::cout 
+std::ostream& operator<< (std::ostream &out, const String &S){
+   out << S.m_str; 
+   return out;
+}
+
+std::istream& operator>> (std::istream &is, String &S){
+    char* input = new char[256];
+    is.getline(input,256);
+    std::string convert(input);
+    S.m_str = convert;
+    return is;
+}
+
+//getters-------------------------------
+
+//when operator= failes (e.g. for QString or something)
+std::string String::get(){
+    return m_str;
+}
+
+int String::size(){
+    return m_str.size();
+}
+
+int String::getSize(){
+    String::size();
+}
+
+int String::length(){
+    return m_str.length();
+}
+
+int String::getLength(){
+    String::length();
+}
+
+char String::charAt(int pos){
+    return m_str.at(pos); 
+}
+
+std::vector<char> String::charList(){
+    m_cList.clear();
+    for(int i = 0; i < m_str.length(); i++){
+        m_cList.push_back(m_str.at(i));
+    }
+    return m_cList;
+}
+
+//setters------------------------------
+
+void String::set(std::string str){
+    this->m_str = str;
+}
+
+//formatting----------------------------
+
+
+bool String::compare(std::string &str){
+    if (m_str.compare(str) == 0)
         return true;
     else return false;
 }
 
-int String::findFirst(std::string &str, std::string fin){
-    boost::iterator_range<std::string::iterator> r = boost::find_first(str,fin);
-    std::string::iterator it;
-    int i = std::distance( r.begin(), it);
-    return i;
+// alias form compare, Java-String name
+bool String::equals(std::string &str){
+    String::equals(str);
 }
 
-std::vector<std::string> String::split(std::string &str, std::string split){
-    std::vector<std::string> strs;
-    boost::split(strs,str,boost::is_any_of(split));
-    return strs;
-}
-
-std::string String::toUpper(std::string &str){
-    boost::to_upper(str);
-    return str;
-}
-
-std::string String::toLower(std::string &str){
-    boost::to_lower(str);
-    return str;
-}
-
-std::string String::trim(std::string &str){
-    boost::trim(str);
-    return str;
-}
-
-std::string String::trimLeft(std::string &str){
-    boost::trim_left(str);
-    return str;
-}
-
-std::string String::trimRight(std::string &str){
-    boost::trim_right(str);
-    return str;
-}
-
-short String::toShort(std::string &str){
-    std::string::size_type ss;
-    int num = std::stoi(str,&ss);
-    if ((num <= 32767) || (num >= -32767)){
-            short snum = num;
-            return snum;
+int String::findFirst(std::string find){
+    std::size_t found = m_str.find(find);
+    if(found != std::string::npos){
+        int i = static_cast<int>(found);
+        return i;
     }
-    else return 0; // exception needed here
 }
 
-int String::toInt(std::string &str){
-    std::string::size_type si;
-    int num = std::stoi(str,&si);
-    return num;
+// alias form findFirst, Java-String name
+int String::indexOf(std::string find){
+    String::findFirst(find);
 }
 
-long String::toLong(std::string &str){
-    std::string::size_type sl;
-    long num = std::stoi(str,&sl);
-    return num;
+int String::findLast(std::string find){
+    std::size_t found = m_str.rfind(find);
+    if(found != std::string::npos){
+        int i = static_cast<int>(found);
+        return i;
+    }
 }
 
-float String::toFloat(std::string &str){
-    std::string::size_type sf;
-    float num = std::stof(str,&sf);
-    return num;
+// alias from findLast, Java-String name
+int String::lastIndexOf(std::string find){
+    String::findLast(find);
 }
 
-double String::toDouble(std::string &str){
-    std::string::size_type sd;
-    double num = std::stod(str,&sd);
-    return num;
+void String::replace(std::string oldstr, std::string newstr){
+    boost::replace_all(m_str,oldstr,newstr);    
 }
 
-/*
+void String::replaceFirst(std::string oldstr, std::string newstr){
+    boost::replace_first(m_str,oldstr,newstr);    
+}
+
+void String::replaceLast(std::string oldstr, std::string newstr){
+    boost::replace_last(m_str,oldstr,newstr);    
+}
+
+void String::replaceHead(int headsize, std::string newstr){
+    boost::replace_head(m_str,headsize,newstr);    
+}
+
+void String::replaceTail(int tailsize, std::string newstr){
+    boost::replace_tail(m_str,tailsize,newstr);    
+}
+
+void String::erase(std::string erasestr){
+    boost::erase_all(m_str,erasestr);
+}
+
+void String::eraseFirst(std::string erasestr){
+    boost::erase_first(m_str,erasestr);
+}
+
+void String::eraseLast(std::string erasestr){
+    boost::erase_last(m_str,erasestr);
+}
+
+void String::eraseHead(int headsize){
+    boost::erase_head(m_str,headsize);    
+}
+
+void String::eraseTail(int tailsize){
+    boost::erase_tail(m_str,tailsize);    
+}
+
+void String::split(std::string split){
+    boost::split(m_parts,m_str,boost::is_any_of(split));
+}
+
+std::vector<std::string> String::splitBack(std::string split){
+    boost::split(m_parts,m_str,boost::is_any_of(split));
+    return m_parts;
+}
+
+void String::toUpper(){
+    boost::to_upper(m_str);
+}
+
+void String::toLower(){
+    boost::to_lower(m_str);
+}
+
+void String::trim(){
+    boost::trim(m_str);
+}
+
+void String::trimLeft(){
+    boost::trim_left(m_str);
+}
+
+void String::trimRight(){
+    boost::trim_right(m_str);
+}
+
+void String::normPathUnix(){
+    boost::replace_all(m_str,"\\","/");
+    for(int i = 1; i < m_str.length(); i++){
+        if(m_str.at(i) == m_str.at(i-1)){
+            m_str.erase(i);
+        }
+    }
+}
+
+void String::normPathWindows(){
+    boost::replace_all(m_str,"/","\\");
+    for(int i = 1; i < m_str.length(); i++){
+        if(m_str.at(i) == m_str.at(i-1)){
+            m_str.erase(i);
+        }
+    }
+}
+
+//casts------------------------------------
+
+short String::toShort(){
+    try{
+        short num = boost::lexical_cast<short>(m_str);
+        return num;
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast, reference is not from type short:" << std::endl;
+    }
+}
+
+int String::toInt(){
+    try{
+        int num = boost::lexical_cast<int>(m_str);
+        return num;
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast, reference is not from type int:" << std::endl;
+    }
+}
+
+float String::toFloat(){
+    try{
+        float num = boost::lexical_cast<float>(m_str);
+        return num;
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast, reference is not from type float:" << std::endl;
+    }
+}
+
+double String::toDouble(){
+    try{
+        double num = boost::lexical_cast<double>(m_str);
+        return num;
+    }
+    catch(const boost::bad_lexical_cast &e){
+        std::cout << "Caught bad lexical cast, reference is not from type double:" << std::endl;
+    }
+}
+
 int main(void){
-    std::string test = "Hallo";
-    test = String::toLower(test);
-    std::cout << "!" << test << "!" << std::endl;
-    int num = String::findFirst(test,"l");
-
+    std::string test = "hello";
+    String str = "hella";
+    std::cin >> str;
+    std::cout << str << std::endl;
+    std::cout << str.length() << std::endl;
 }
-*/
+
