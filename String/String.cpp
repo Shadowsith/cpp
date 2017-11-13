@@ -13,6 +13,7 @@ String::String(std::string str){
 
 String::String(const char* c){
     std::string convert(c);
+    delete[] c;
     m_str = convert;
 }
 
@@ -26,6 +27,7 @@ String::String(std::vector<char> cvec){
     for(int i = 0; i < cvec.size(); i++){
         m_str += cvec[i];
     }
+    cvec.clear();
 }
 
 String::String(short num){
@@ -88,6 +90,7 @@ String& String::operator= (std::string str){
 // working!
 String& String::operator= (const char* c){
     std::string convert(c);
+    delete[] c;
     m_str = convert;
 }
 
