@@ -10,8 +10,11 @@ class String{
 
     public:
         //constructors
-        String(std::string str);
+        String();
+        String(const std::string str);
+        
         String(const char* c);
+        
         String(std::vector<std::string> strvec);
         String(std::vector<char> cvec);
         String(short num);
@@ -19,22 +22,25 @@ class String{
         String(long num);
         String(float num);
         String(double num);
+        
 
         //operators
         operator std::string() const; // save String obj to std::string
+        String& operator= (String s);
         String& operator= (std::string str); // save std::string to String
         String& operator= (const char* c); // save char* to String
 
-        friend bool operator== (const String &S1, const String &S2); // String and String
-        friend bool operator== (const std::string str, const String &S); // std::string and String
-        friend bool operator== (const String &S, const std::string str); // String and std::string
+        bool operator== (const String &S); // String and String
+        bool operator== (const std::string str); // std::string and String
 
-        friend String operator+ (const String &S1, const String &S2);
-        friend String operator+ (std::string str, const String &S);
-        friend String operator+ (const String &S, std::string str);
+        String& operator+ (const String &S);
+        String& operator+ (const std::string str);
+
+        String& operator+= (const String &S);
+        String& operator+= (const std::string str);
 
         friend std::ostream& operator<< (std::ostream &out, const String &S);
-        friend std::istream& operator>> (std::istream &is, String &S);
+        friend std::istream& operator>> (std::istream &is, const String &S);
 
         //getters 
         std::string get();

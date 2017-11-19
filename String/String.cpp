@@ -5,17 +5,24 @@
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include <algorithm>
+#include <utility>
 
 //constructors--------------------------
-String::String(std::string str){
+String::String(){
+    m_str = "";
+}
+
+String::String(const std::string str){
     m_str = str;
 }
 
+
 String::String(const char* c){
-    std::string convert(c);
-    delete[] c;
-    m_str = convert;
+        std::string convert(c);
+        m_str = convert;
 }
+
 
 String::String(std::vector<std::string> strvec){
     for(int i = 0; i < strvec.size(); i++){
@@ -82,21 +89,26 @@ String::operator std::string() const{
     return m_str;
 }
 
-// testing... working!
+
+String& String::operator= (String s){
+    m_str = s.m_str;
+}
+
+
 String& String::operator= (std::string str){
     m_str = str;
 }
 
-// working!
+
 String& String::operator= (const char* c){
     std::string convert(c);
-    delete[] c;
     m_str = convert;
 }
 
-bool operator== (const String &S1, const String &S2){
 
-    if(S1.m_str.compare(S2.m_str) == 0){
+bool String::operator== (const String &S){
+
+    if(this->m_str.compare(S.m_str) == 0){
         return true;           
     }
     else{
@@ -104,9 +116,9 @@ bool operator== (const String &S1, const String &S2){
     }
 }
 
-bool operator== (const std::string str, const String &S){
+bool String::operator== (const std::string str){
 
-    if(str.compare(S.m_str) == 0){
+    if(this->m_str.compare(str) == 0){
         return true;
     }
     else{
@@ -114,30 +126,26 @@ bool operator== (const std::string str, const String &S){
     }
 }
 
-bool operator== (const String &S, const std::string str){
-    
-    if(S.m_str.compare(str) == 0){
-        return true;
-    }
-    else{
-        return false;
-    }
+String& String::operator+ (const String &S){
+    this->m_str += S.m_str;
+    return *this;
 }
 
-String operator+ (const String &S1, const String &S2){
-    std::string res = S1.m_str + S2.m_str; 
-    return res;
+String& String::operator+ (const std::string str){
+    this->m_str += str;
+    return *this;
 }
 
-String operator+ (std::string str, const String &S){
-    std::string res = str + S.m_str;
-    return res;
+String& String::operator+= (const String &S){
+    this->m_str += S.m_str; 
+    return *this;
 }
 
-String operator+ (const String &S, std::string str){
-    std::string res = S.m_str + str;
-    return res;
+String& String::operator+= (const std::string str){
+    this->m_str += str;
+    return *this;
 }
+
 
 // shows member m_str for std::cout 
 std::ostream& operator<< (std::ostream &out, const String &S){
@@ -149,7 +157,7 @@ std::istream& operator>> (std::istream &is, String &S){
     char* input = new char[256];
     is.getline(input,256);
     std::string convert(input);
-    S.m_str = convert;
+    S = convert;
     return is;
 }
 
@@ -364,8 +372,13 @@ double String::toDouble(){
 }
 
 int main(void){
-    std::string test = "hello";
-    String str = "hella";
+    //std::string test = "hello";
+    const char* ch = "hello";
+    String str = ch;
+    std::string sstr = "hi";
+    String s(12);
+    str = sstr + sstr;
+    //str = "hALLO";
     std::cin >> str;
     std::cout << str << std::endl;
     std::cout << str.length() << std::endl;
