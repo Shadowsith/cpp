@@ -82,6 +82,10 @@ class String{
         void trim();
         void trimLeft();
         void trimRight();
+        void fillLeft(int length, char fill);
+        inline void padLeft(int length, char fill);
+        void fillRight(int length, char fill);
+        inline void padRight(int length, char fill);
         void normPathUnix();
         void normPathWindows();
 

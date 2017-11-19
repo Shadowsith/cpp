@@ -311,6 +311,26 @@ void String::trimRight(){
     boost::trim_right(m_str);
 }
 
+void String::fillLeft(int length, char fill){
+    for(int i = 0; i < length; i++){
+        m_str.insert(m_str.begin(), fill);
+    }
+}
+
+void String::padLeft(int length, char fill){
+    String::fillLeft(length, fill);
+}
+
+void String::fillRight(int length, char fill){
+    for (int i = 0; i < length; i++) {
+        m_str += fill;
+    }
+}
+
+void String::padRight(int length, char fill){
+    String::fillRight(length, fill);
+}
+
 void String::normPathUnix(){
     boost::replace_all(m_str,"\\","/");
     for(int i = 1; i < m_str.length(); i++){
@@ -372,14 +392,9 @@ double String::toDouble(){
 }
 
 int main(void){
-    //std::string test = "hello";
-    const char* ch = "hello";
-    String str = ch;
-    std::string sstr = "hi";
-    String s(12);
-    str = sstr + sstr;
-    //str = "hALLO";
-    std::cin >> str;
+    String str = "1";
+    str.fillLeft(3,'0');
+    str.fillRight(3,'2');
     std::cout << str << std::endl;
     std::cout << str.length() << std::endl;
 }
