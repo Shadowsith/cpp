@@ -33,11 +33,19 @@ class String{
         bool operator== (const String &S); // String and String
         bool operator== (const std::string str); // std::string and String
 
-        String& operator+ (const String &S);
-        String& operator+ (const std::string str);
-
+/*
+        String operator+ (const String& lhs, const std::string& rhs);
+        String operator+ (std::string& lhs, const String& rhs);
+        String operator+ (const string& lhs, const string& rhs);
+        String operator+ (const string& lhs, const char*   rhs);
+        String operator+ (const char*   lhs, const string& rhs);
+        String operator+ (const string& lhs, char          rhs);
+        String operator+ (char          lhs, const string& rhs);
+*/
         String& operator+= (const String &S);
         String& operator+= (const std::string str);
+        String& operator+= (const char* c);
+        String& operator+= (const char c); 
 
         friend std::ostream& operator<< (std::ostream &out, const String &S);
         friend std::istream& operator>> (std::istream &is, const String &S);
@@ -96,3 +104,8 @@ class String{
         float toFloat();
         double toDouble();
 };
+
+inline String operator+ (String lhs, const String& rhs); 
+inline String operator+ (String lhs, const std::string& rhs);
+inline String operator+ (String lhs, const char* rhs);
+inline String operator+ (String lhs, const char rhs);

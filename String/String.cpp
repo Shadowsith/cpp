@@ -17,12 +17,10 @@ String::String(const std::string str){
     m_str = str;
 }
 
-
 String::String(const char* c){
-        std::string convert(c);
-        m_str = convert;
+    std::string convert(c);
+    m_str = convert;
 }
-
 
 String::String(std::vector<std::string> strvec){
     for(int i = 0; i < strvec.size(); i++){
@@ -126,24 +124,51 @@ bool String::operator== (const std::string str){
     }
 }
 
-String& String::operator+ (const String &S){
-    this->m_str += S.m_str;
-    return *this;
-}
-
-String& String::operator+ (const std::string str){
+/*String& String::operator+ (const std::string str){
     this->m_str += str;
     return *this;
-}
+}*/
 
 String& String::operator+= (const String &S){
     this->m_str += S.m_str; 
     return *this;
 }
 
+String operator+ (String lhs, const String& rhs)
+{
+    lhs += rhs;
+    return lhs;
+}
+
 String& String::operator+= (const std::string str){
     this->m_str += str;
     return *this;
+}
+
+String operator+ (String lhs, const std::string& rhs){
+    lhs += rhs;
+    return lhs;
+}
+
+String& String::operator+= (const char* c){
+    std::string convert(c);
+    this->m_str += convert;
+    return *this;
+}
+
+String operator+ (String lhs, const char* rhs){
+    lhs += rhs;
+    return lhs;
+}
+
+String& String::operator+= (const char c){
+    this->m_str += c;
+    return *this;
+}
+
+String operator+ (String lhs, const char rhs){
+    lhs += rhs;
+    return lhs;
 }
 
 
@@ -393,8 +418,13 @@ double String::toDouble(){
 
 int main(void){
     String str = "1";
-    str.fillLeft(3,'0');
-    str.fillRight(3,'2');
+    String lhs = "ha";
+    String rhs = "llo";
+    std::string ss = "hi";
+    //str.fillLeft(3,'0');
+    //str.fillRight(3,'2');
+    //str = "5" + "4";
+    str = lhs + ss + rhs;
     std::cout << str << std::endl;
     std::cout << str.length() << std::endl;
 }
