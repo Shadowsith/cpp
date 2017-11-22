@@ -124,11 +124,6 @@ bool String::operator== (const std::string str){
     }
 }
 
-/*String& String::operator+ (const std::string str){
-    this->m_str += str;
-    return *this;
-}*/
-
 String& String::operator+= (const String &S){
     this->m_str += S.m_str; 
     return *this;

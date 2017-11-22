@@ -33,15 +33,6 @@ class String{
         bool operator== (const String &S); // String and String
         bool operator== (const std::string str); // std::string and String
 
-/*
-        String operator+ (const String& lhs, const std::string& rhs);
-        String operator+ (std::string& lhs, const String& rhs);
-        String operator+ (const string& lhs, const string& rhs);
-        String operator+ (const string& lhs, const char*   rhs);
-        String operator+ (const char*   lhs, const string& rhs);
-        String operator+ (const string& lhs, char          rhs);
-        String operator+ (char          lhs, const string& rhs);
-*/
         String& operator+= (const String &S);
         String& operator+= (const std::string str);
         String& operator+= (const char* c);
