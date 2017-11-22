@@ -38,6 +38,8 @@ class String{
         String& operator+= (const char* c);
         String& operator+= (const char c); 
 
+        char& operator[] (int pos);
+
         friend std::ostream& operator<< (std::ostream &out, const String &S);
         friend std::istream& operator>> (std::istream &is, const String &S);
 

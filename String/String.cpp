@@ -87,11 +87,9 @@ String::operator std::string() const{
     return m_str;
 }
 
-
 String& String::operator= (String s){
     m_str = s.m_str;
 }
-
 
 String& String::operator= (std::string str){
     m_str = str;
@@ -102,7 +100,6 @@ String& String::operator= (const char* c){
     std::string convert(c);
     m_str = convert;
 }
-
 
 bool String::operator== (const String &S){
 
@@ -166,6 +163,9 @@ String operator+ (String lhs, const char rhs){
     return lhs;
 }
 
+char& String::operator[] (int pos){
+    return this->m_str[pos];
+}
 
 // shows member m_str for std::cout 
 std::ostream& operator<< (std::ostream &out, const String &S){
@@ -420,7 +420,7 @@ int main(void){
     //str.fillRight(3,'2');
     //str = "5" + "4";
     str = lhs + ss + rhs;
-    std::cout << str << std::endl;
+    std::cout << str[0] << std::endl;
     std::cout << str.length() << std::endl;
 }
 
