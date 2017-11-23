@@ -95,7 +95,6 @@ String& String::operator= (std::string str){
     m_str = str;
 }
 
-
 String& String::operator= (const char* c){
     std::string convert(c);
     m_str = convert;
@@ -235,6 +234,15 @@ bool String::compare(std::string &str){
 bool String::equals(std::string &str){
     String::equals(str);
 }
+
+template<typename T1, typename T2>
+T1& String::concat(T1& a, T2& b){
+    a += b;
+    this->m_str = a;
+    return a;
+}
+
+
 
 int String::findFirst(std::string find){
     std::size_t found = m_str.find(find);
@@ -414,13 +422,12 @@ double String::toDouble(){
 int main(void){
     String str = "1";
     String lhs = "ha";
-    String rhs = "llo";
-    std::string ss = "hi";
+    std::string rhs = "llo";
+    char ss = 'h';
     //str.fillLeft(3,'0');
     //str.fillRight(3,'2');
     //str = "5" + "4";
-    str = lhs + ss + rhs;
-    std::cout << str[0] << std::endl;
-    std::cout << str.length() << std::endl;
+    str.concat(str.concat(rhs, lhs), ss);
+    std::cout << str << std::endl;
 }
 

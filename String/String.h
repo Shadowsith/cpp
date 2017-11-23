@@ -60,8 +60,32 @@ class String{
 
         // string formatting
         bool isEmpty();
+        
+        //TODO
+        bool isNull();
+        bool isNullOrEmpty();
+        bool isNullOrWhiteSpace();
+        bool isTab();
+        bool isTabOrWhiteSpace();
+        //---
+
         bool compare(std::string &str);
         inline bool equals(std::string &str);
+
+        template<typename T1, typename T2>
+        inline T1& concat(T1& a, T2& b);
+
+        /*
+        String& concat(const String& lhs, const String& rhs);
+        String& concat(const String& lhs, const std::string& rhs);
+        String& concat(const std::string& lhs, const String& rhs);
+        String& concat(const String& lhs, const char* rhs);
+        String& concat(const char* lhs, String& rhs);
+        String& concat(
+        String& concat(const std::string& lhs, const std::string rhs);
+        String& concat(const std::string& 
+        */
+
         int findFirst(std::string find);
         inline int indexOf(std::string find);
         int findLast(std::string find);
