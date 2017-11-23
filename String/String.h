@@ -11,6 +11,7 @@ class String{
     public:
         //constructors
         String();
+
         String(const std::string str);
         
         String(const char* c);

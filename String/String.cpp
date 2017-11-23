@@ -420,14 +420,7 @@ double String::toDouble(){
 }
 
 int main(void){
-    String str = "1";
-    String lhs = "ha";
-    std::string rhs = "llo";
-    char ss = 'h';
-    //str.fillLeft(3,'0');
-    //str.fillRight(3,'2');
-    //str = "5" + "4";
-    str.concat(str.concat(rhs, lhs), ss);
-    std::cout << str << std::endl;
+    String s = "hi";
+    String a = "ha";
 }
 
