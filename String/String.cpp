@@ -17,10 +17,7 @@ String::String(const std::string str){
     m_str = str;
 }
 
-String::String(const char* c){
-    std::string convert(c);
-    m_str = convert;
-}
+String::String(const char* c) : m_str(c) {}
 
 String::String(std::vector<std::string> strvec){
     for(int i = 0; i < strvec.size(); i++){
@@ -420,7 +417,5 @@ double String::toDouble(){
 }
 
 int main(void){
-    String s = "hi";
-    String a = "ha";
 }
 
