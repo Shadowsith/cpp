@@ -72,25 +72,23 @@ String& String::operator= (const char* c){
     m_str = convert;
 }
 
-bool String::operator== (const String &S){
-
-    if(this->m_str.compare(S.m_str) == 0){
-        return true;           
-    }
-    else{
-        return false;
-    }
+bool String::operator== (const String& S){
+    return (m_str.compare(S.m_str) == 0);
 }
 
 bool String::operator== (const std::string str){
-
-    if(this->m_str.compare(str) == 0){
-        return true;
-    }
-    else{
-        return false;
-    }
+    return (m_str.compare(str) == 0);
 }
+
+/*
+bool String::operator!= (const String& S){
+    return (m_str.compare(S.m_str) != 0);
+}
+
+bool String::operator!= (const std::string str){
+    retun (m_str.compar(str) != 0);
+}
+*/
 
 String& String::operator+= (const String &S){
     this->m_str += S.m_str; 
