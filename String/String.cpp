@@ -33,48 +33,23 @@ String::String(std::vector<char> cvec){
 }
 
 String::String(short num){
-    try{
-        m_str = boost::lexical_cast<std::string>(num);
-    }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
-    }
+    m_str = std::to_string(num);
 }
 
 String::String(int num){
-    try{
-        m_str = boost::lexical_cast<std::string>(num);
-    }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
-    }
+    m_str = std::to_string(num);
 }
 
 String::String(long num){
-    try{
-        m_str = boost::lexical_cast<std::string>(num);
-    }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
-    }
+    m_str = std::to_string(num);
 }
 
 String::String(float num){
-    try{
-        m_str = boost::lexical_cast<std::string>(num);
-    }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
-    }
+    m_str = std::to_string(num);
 }
 
 String::String(double num){
-    try{
-        m_str = boost::lexical_cast<std::string>(num);
-    }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast with error " << e.what() << std::endl;
-    }
+    m_str = std::to_string(num);
 }
 
 //operators----------------------------
