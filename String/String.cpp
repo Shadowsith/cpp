@@ -80,15 +80,31 @@ bool String::operator== (const std::string str){
     return (m_str.compare(str) == 0);
 }
 
-/*
+bool String::operator== (const char* c){
+    for(int i = 0; i < m_str.length(); i++){
+        if(m_str[i] != c[i]){
+            return false;
+        }
+    }
+    return true;
+}
+
 bool String::operator!= (const String& S){
     return (m_str.compare(S.m_str) != 0);
 }
 
 bool String::operator!= (const std::string str){
-    retun (m_str.compar(str) != 0);
+    return (m_str.compare(str) != 0);
 }
-*/
+
+bool String::operator!= (const char* c){
+    for(int i = 0; i < m_str.length(); i++){
+        if(m_str[i] != c[i]){
+            return true;
+        }
+    }
+    return false;
+}
 
 String& String::operator+= (const String &S){
     this->m_str += S.m_str; 

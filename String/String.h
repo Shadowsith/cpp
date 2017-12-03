@@ -24,7 +24,6 @@ class String{
         String(float num);
         String(double num);
         
-
         //operators
         operator std::string() const; // save String obj to std::string
         String& operator= (String s);
@@ -33,6 +32,11 @@ class String{
 
         bool operator== (const String &S); // String and String
         bool operator== (const std::string str); // std::string and String
+        bool operator== (const char* c);
+
+        bool operator!= (const String& S);
+        bool operator!= (const std::string str);
+        bool operator!= (const char* c);
 
         String& operator+= (const String &S);
         String& operator+= (const std::string str);
