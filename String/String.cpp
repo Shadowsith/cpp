@@ -1,12 +1,11 @@
 #include "String.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/case_conv.hpp>
-#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <vector>
 #include <iterator>
 #include <algorithm>
 #include <utility>
+#include <limits>
+#include <exception>
 
 //constructors--------------------------
 String::String(){
@@ -228,8 +227,6 @@ T1& String::concat(T1& a, T2& b){
     return a;
 }
 
-
-
 int String::findFirst(std::string find){
     std::size_t pos = m_str.find(find);
     if(pos != std::string::npos){
@@ -257,7 +254,6 @@ int String::lastIndexOf(std::string find){
 }
 
 void String::replace(std::string oldstr, std::string newstr){
-//    boost::replace_all(m_str,oldstr,newstr);    
     std::string str;
     str.reserve(m_str.length());
 
@@ -289,31 +285,44 @@ void String::replaceLast(std::string oldstr, std::string newstr){
 }
 
 void String::replaceHead(int headsize, std::string newstr){
-    boost::replace_head(m_str,headsize,newstr);    
+    m_str.erase(0,headsize);
+    m_str = newstr + m_str;
 }
 
 void String::replaceTail(int tailsize, std::string newstr){
-    boost::replace_tail(m_str,tailsize,newstr);    
+    m_str.erase(m_str.end()-tailsize, m_str.end());
+    m_str += newstr;
 }
 
 void String::erase(std::string erasestr){
-    boost::erase_all(m_str,erasestr);
+    std::string::size_type n = erasestr.length();
+    for (std::string::size_type i = m_str.find(erasestr); i != std::string::npos; 
+         i = m_str.find(erasestr)) 
+    {
+        m_str.erase(i, n);    
+    }
 }
 
 void String::eraseFirst(std::string erasestr){
-    boost::erase_first(m_str,erasestr);
+    std::size_t pos = m_str.find(erasestr);
+    if(pos != std::string::npos){
+        m_str.erase(pos, erasestr.length());
+    }
 }
 
 void String::eraseLast(std::string erasestr){
-    boost::erase_last(m_str,erasestr);
+    std::size_t pos = m_str.rfind(erasestr);
+    if(pos != std::string::npos){
+        m_str.erase(pos, erasestr.length());
+    }
 }
 
 void String::eraseHead(int headsize){
-    boost::erase_head(m_str,headsize);    
+    m_str.erase(0,headsize);
 }
 
 void String::eraseTail(int tailsize){
-    boost::erase_tail(m_str,tailsize);    
+    m_str.erase(m_str.end()-tailsize, m_str.end());
 }
 
 std::vector<std::string>& String::split(const char c){
@@ -371,7 +380,6 @@ void String::trim(){
 }
 
 void String::trimLeft(){
-    //boost::trim_left(m_str);
     std::string::size_type trimIt = 0;
     for(std::string::size_type i = 0; i < m_str.length(); i++)
     {
@@ -385,7 +393,6 @@ void String::trimLeft(){
 }
 
 void String::trimRight(){
-    //boost::trim_right(m_str);
     std::string::size_type trimIt = m_str.length();
     for(std::string::size_type i = m_str.length()-1; i > 0; i--)
     {
@@ -417,8 +424,9 @@ void String::padRight(int length, char fill){
     String::fillRight(length, fill);
 }
 
+// TODO
 void String::normPathUnix(){
-    boost::replace_all(m_str,"\\","/");
+    //boost::replace_all(m_str,"\\","/");
     for(int i = 1; i < m_str.length(); i++){
         if(m_str.at(i) == m_str.at(i-1)){
             m_str.erase(i);
@@ -426,8 +434,9 @@ void String::normPathUnix(){
     }
 }
 
+// TODO
 void String::normPathWindows(){
-    boost::replace_all(m_str,"/","\\");
+    //boost::replace_all(m_str,"/","\\");
     for(int i = 1; i < m_str.length(); i++){
         if(m_str.at(i) == m_str.at(i-1)){
             m_str.erase(i);
@@ -438,49 +447,68 @@ void String::normPathWindows(){
 //casts------------------------------------
 
 short String::toShort(){
-    try{
-        short num = boost::lexical_cast<short>(m_str);
-        return num;
+    try
+    {
+        std::string::size_type si;
+        int itos = std::stoi(m_str, &si);
+        if(itos <= std::numeric_limits<short>::max() )
+        {
+            short num = itos;
+            return num;
+        }
+        else std::cout << "The number was to big for short!" << std::endl;
     }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast, reference is not from type short:" << std::endl;
+    catch(std::exception ex)
+    {
+        std::cout << "Can't convert short to string" << std::endl;
+        std::cout << ex.what() << std::endl;
     }
 }
 
 int String::toInt(){
-    try{
-        int num = boost::lexical_cast<int>(m_str);
-        return num;
+    try
+    {
+        std::string::size_type si;
+        int num = std::stoi(m_str, &si);
     }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast, reference is not from type int:" << std::endl;
+    catch(const std::exception& ex)
+    {
+        std::cout << "Caught bad cast, reference is not from type int:" << std::endl;
+        std::cout << ex.what() << std::endl;
     }
 }
 
 float String::toFloat(){
-    try{
-        float num = boost::lexical_cast<float>(m_str);
+    try
+    {
+        std::string::size_type sf;
+        float num = std::stof(m_str, &sf);
         return num;
     }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast, reference is not from type float:" << std::endl;
+    catch(const std::exception& ex)
+    {
+        std::cout << "Caught bad cast, reference is not from type float:" << std::endl;
+        std::cout << ex.what() << std::endl;
     }
 }
 
 double String::toDouble(){
-    try{
-        double num = boost::lexical_cast<double>(m_str);
+    try
+    {
+        std::string::size_type sd;
+        double num = std::stod(m_str, &sd);
         return num;
     }
-    catch(const boost::bad_lexical_cast &e){
-        std::cout << "Caught bad lexical cast, reference is not from type double:" << std::endl;
+    catch(const std::exception& ex)
+    {
+        std::cout << "Caught bad cast, reference is not from type float:" << std::endl;
+        std::cout << ex.what() << std::endl;
     }
 }
 
 int main(void){
     String s = "ffggff";
-    s.replaceFirst("ff","h");
-    s.replaceLast("ff","h");
+    s.eraseFirst("ff");
     std::cout << s << std::endl;
 }
 
