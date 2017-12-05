@@ -296,12 +296,12 @@ void String::eraseTail(int tailsize){
     boost::erase_tail(m_str,tailsize);    
 }
 
-void String::split(std::string split){
-    boost::split(m_parts,m_str,boost::is_any_of(split));
-}
-
-std::vector<std::string> String::splitBack(std::string split){
-    boost::split(m_parts,m_str,boost::is_any_of(split));
+std::vector<std::string>& String::split(const char c){
+    m_parts.clear();
+    std::stringstream ss(m_str);
+    while(std::getline(ss, m_str, c)){
+        m_parts.push_back(m_str);
+    }
     return m_parts;
 }
 
