@@ -231,9 +231,9 @@ T1& String::concat(T1& a, T2& b){
 
 
 int String::findFirst(std::string find){
-    std::size_t found = m_str.find(find);
-    if(found != std::string::npos){
-        int i = static_cast<int>(found);
+    std::size_t pos = m_str.find(find);
+    if(pos != std::string::npos){
+        int i = static_cast<int>(pos);
         return i;
     }
 }
@@ -244,9 +244,9 @@ int String::indexOf(std::string find){
 }
 
 int String::findLast(std::string find){
-    std::size_t found = m_str.rfind(find);
-    if(found != std::string::npos){
-        int i = static_cast<int>(found);
+    std::size_t pos = m_str.rfind(find);
+    if(pos != std::string::npos){
+        int i = static_cast<int>(pos);
         return i;
     }
 }
@@ -257,15 +257,35 @@ int String::lastIndexOf(std::string find){
 }
 
 void String::replace(std::string oldstr, std::string newstr){
-    boost::replace_all(m_str,oldstr,newstr);    
+//    boost::replace_all(m_str,oldstr,newstr);    
+    std::string str;
+    str.reserve(m_str.length());
+
+    std::string::size_type lastPos = 0;
+    std::string::size_type findPos;
+
+    while(std::string::npos != (findPos = m_str.find(oldstr, lastPos))){
+        str.append(m_str, lastPos, findPos - lastPos);
+        str += newstr;
+        lastPos = findPos + oldstr.length();
+    }
+
+    str += m_str.substr(lastPos);
+    m_str.swap(str);
 }
 
 void String::replaceFirst(std::string oldstr, std::string newstr){
-    boost::replace_first(m_str,oldstr,newstr);    
+    std::size_t pos = m_str.find(oldstr);
+    if(pos != std::string::npos){
+        m_str.replace(pos, oldstr.length(), newstr);
+    }
 }
 
 void String::replaceLast(std::string oldstr, std::string newstr){
-    boost::replace_last(m_str,oldstr,newstr);    
+    std::size_t pos = m_str.rfind(oldstr);
+    if(pos != std::string::npos){
+        m_str.replace(pos, oldstr.length(), newstr);
+    }
 }
 
 void String::replaceHead(int headsize, std::string newstr){
@@ -306,23 +326,75 @@ std::vector<std::string>& String::split(const char c){
 }
 
 void String::toUpper(){
-    boost::to_upper(m_str);
+    std::locale loc;
+    std::string str;
+    for(std::string::size_type i = 0; i < m_str.length(); ++i)
+    {
+        str += std::toupper(m_str[i], loc);
+    }
+    m_str = str;
 }
 
 void String::toLower(){
-    boost::to_lower(m_str);
+    std::locale loc;
+    std::string str;
+    for(std::string::size_type i = 0; i < m_str.length(); ++i)
+    {
+        str += std::tolower(m_str[i], loc);
+    }
+    m_str = str;
 }
 
 void String::trim(){
-    boost::trim(m_str);
+    //trim left side
+    std::string::size_type trimIt = 0;
+    for(std::string::size_type i = 0; i < m_str.length(); i++)
+    {
+        if(m_str[i] == ' ')
+        {
+            trimIt++;    
+        }
+        else break;
+    }
+    m_str.erase(0,trimIt);
+
+    //trim right side
+    trimIt = m_str.length();
+    for(std::string::size_type i = m_str.length()-1; i > 0; i--)
+    {
+        if(m_str[i] == ' '){
+            trimIt--;
+        }
+        else break;
+    }
+    m_str.erase(trimIt,m_str.length()-1);
 }
 
 void String::trimLeft(){
-    boost::trim_left(m_str);
+    //boost::trim_left(m_str);
+    std::string::size_type trimIt = 0;
+    for(std::string::size_type i = 0; i < m_str.length(); i++)
+    {
+        if(m_str[i] == ' ')
+        {
+            trimIt++;    
+        }
+        else break;
+    }
+    m_str.erase(0,trimIt);
 }
 
 void String::trimRight(){
-    boost::trim_right(m_str);
+    //boost::trim_right(m_str);
+    std::string::size_type trimIt = m_str.length();
+    for(std::string::size_type i = m_str.length()-1; i > 0; i--)
+    {
+        if(m_str[i] == ' '){
+            trimIt--;
+        }
+        else break;
+    }
+    m_str.erase(trimIt,m_str.length()-1);
 }
 
 void String::fillLeft(int length, char fill){
@@ -406,5 +478,9 @@ double String::toDouble(){
 }
 
 int main(void){
+    String s = "ffggff";
+    s.replaceFirst("ff","h");
+    s.replaceLast("ff","h");
+    std::cout << s << std::endl;
 }
 
