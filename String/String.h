@@ -65,14 +65,7 @@ class String{
 
         // string formatting
         bool isEmpty();
-        
-        //TODO
-        bool isNull();
-        bool isNullOrEmpty();
-        bool isNullOrWhiteSpace();
-        bool isTab();
-        bool isTabOrWhiteSpace();
-        //---
+        bool isEmptyOrWhiteSpace();
 
         bool compare(std::string &str);
         inline bool equals(std::string &str);
@@ -80,6 +73,16 @@ class String{
         template<typename T1, typename T2>
         inline T1& concat(T1& a, T2& b);
 
+        void copy(String &s);
+        void copy(std::string &str);
+        void copy(char* c);
+
+        void copyTo(const String &s);
+        void copyTo(const std::string &str);
+        void copyTo(const char* c);
+
+        std::vector<int> find(std::string search);
+        inline std::vector<int> findAll(std::string search);
         int findFirst(std::string find);
         inline int indexOf(std::string find);
         int findLast(std::string find);

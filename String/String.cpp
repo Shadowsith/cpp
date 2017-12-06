@@ -6,6 +6,7 @@
 #include <utility>
 #include <limits>
 #include <exception>
+#include <sstream>
 
 //constructors--------------------------
 String::String(){
@@ -206,8 +207,45 @@ void String::set(std::string str){
     this->m_str = str;
 }
 
+//aprovement--------------------------
+
+bool String::isEmpty(){
+    return m_str.empty();
+}
+
+bool String::isEmptyOrWhiteSpace(){
+    return (m_str.empty() || m_str.compare(" "));
+}
+
+
+
 //formatting----------------------------
 
+void String::copy(String &s){
+    s = m_str;
+}
+
+void String::copy(std::string &str){
+    str = m_str; 
+}
+
+void String::copy(char* c){
+    for (int i = 0; i < m_str.length(); i++) {
+        c[i] = m_str[i];    
+    }
+}
+
+void String::copyTo(const String &s){
+    m_str = s;
+}
+
+void String::copyTo(const std::string &str){
+    m_str = str;
+}
+
+void String::copyTo(const char* c){
+    m_str = c;
+}
 
 bool String::compare(std::string &str){
     if (m_str.compare(str) == 0)
@@ -225,6 +263,22 @@ T1& String::concat(T1& a, T2& b){
     a += b;
     this->m_str = a;
     return a;
+}
+
+std::vector<int> String::find(std::string search){
+    std::vector<int> vec;
+
+    std::size_t pos = m_str.find(search);
+    while(pos != std::string::npos)
+    {
+        vec.push_back(pos);
+        pos = m_str.find(search,pos+1);
+    }
+    return vec;
+}
+
+std::vector<int> String::findAll(std::string search){
+    String::find(search);
 }
 
 int String::findFirst(std::string find){
@@ -254,20 +308,12 @@ int String::lastIndexOf(std::string find){
 }
 
 void String::replace(std::string oldstr, std::string newstr){
-    std::string str;
-    str.reserve(m_str.length());
-
-    std::string::size_type lastPos = 0;
-    std::string::size_type findPos;
-
-    while(std::string::npos != (findPos = m_str.find(oldstr, lastPos))){
-        str.append(m_str, lastPos, findPos - lastPos);
-        str += newstr;
-        lastPos = findPos + oldstr.length();
+    std::size_t pos = m_str.find(oldstr);
+    while(pos != std::string::npos)
+    {
+        m_str.replace(pos, oldstr.length(), newstr);
+        pos = m_str.find(oldstr,pos+1);
     }
-
-    str += m_str.substr(lastPos);
-    m_str.swap(str);
 }
 
 void String::replaceFirst(std::string oldstr, std::string newstr){
@@ -508,7 +554,10 @@ double String::toDouble(){
 
 int main(void){
     String s = "ffggff";
-    s.eraseFirst("ff");
-    std::cout << s << std::endl;
+    std::vector<int> ivec = s.find("ff");
+    for (int i = 0; i < ivec.size(); i++)
+    {
+        std::cout << ivec[i] << std::endl;   
+    }
 }
 
