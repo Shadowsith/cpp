@@ -30,8 +30,8 @@ class String{
         String& operator= (std::string str); // save std::string to String
         String& operator= (const char* c); // save char* to String
 
-        bool operator== (const String &S); // String and String
-        bool operator== (const std::string str); // std::string and String
+        bool operator== (const String &s); // String and String
+        bool operator== (const std::string &str); // std::string and String
         bool operator== (const char* c);
 
         bool operator!= (const String& S);

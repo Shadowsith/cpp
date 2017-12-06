@@ -72,11 +72,11 @@ String& String::operator= (const char* c){
     m_str = convert;
 }
 
-bool String::operator== (const String& S){
-    return (m_str.compare(S.m_str) == 0);
+bool String::operator== (const String &s){
+    return (m_str.compare(s.m_str) == 0);
 }
 
-bool String::operator== (const std::string str){
+bool String::operator== (const std::string &str){
     return (m_str.compare(str) == 0);
 }
 
@@ -552,12 +552,4 @@ double String::toDouble(){
     }
 }
 
-int main(void){
-    String s = "ffggff";
-    std::vector<int> ivec = s.find("ff");
-    for (int i = 0; i < ivec.size(); i++)
-    {
-        std::cout << ivec[i] << std::endl;   
-    }
-}
 
