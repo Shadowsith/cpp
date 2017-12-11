@@ -67,8 +67,10 @@ class String{
         bool isEmpty();
         bool isEmptyOrWhiteSpace();
 
-        bool compare(std::string &str);
-        inline bool equals(std::string &str);
+        bool compare(const String &s);
+        bool compare(const std::string str);
+        bool compare(const char* c);
+        inline bool equals(const std::string str);
 
         template<typename T1, typename T2>
         inline T1& concat(T1& a, T2& b);

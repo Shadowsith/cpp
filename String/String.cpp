@@ -214,7 +214,15 @@ bool String::isEmpty(){
 }
 
 bool String::isEmptyOrWhiteSpace(){
-    return (m_str.empty() || m_str.compare(" "));
+    if(m_str.empty()){
+        return true;
+    }
+    else{
+        if(m_str.find_first_not_of(' ') != std::string::npos){
+            return false;
+        }
+        return true;
+    }
 }
 
 
@@ -247,14 +255,24 @@ void String::copyTo(const char* c){
     m_str = c;
 }
 
-bool String::compare(std::string &str){
+bool String::compare(const String &s){
+    if(m_str.compare(s.m_str) == 0)
+        return true;
+    else false;
+}
+
+bool String::compare(const std::string str){
     if (m_str.compare(str) == 0)
         return true;
     else return false;
 }
 
+bool String::compare(const char* c){
+    return (m_str == c);
+}
+
 // alias form compare, Java-String name
-bool String::equals(std::string &str){
+bool String::equals(const std::string str){
     String::equals(str);
 }
 
