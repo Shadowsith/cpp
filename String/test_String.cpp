@@ -17,6 +17,14 @@ void EqualTest(){
     else std::cout << d.red("EqualTest: denied") << std::endl;
 }
 
+void NotEqual(){
+    String s1 = "hello";
+    String s2 = "hella";
+    if( s1 != s2){
+        std::cout << d.green("NotEqual: accepted") << std::endl;
+    }
+    else std::cout << d.red("NotEqual: denied") << std::endl;
+}
 
 void CompareTest(){
     String s1 = "hello";
@@ -38,16 +46,6 @@ void CompareNotTest(){
     if ((s1.compare(s2) || s1.compare(str) || s1.compare(ch)) == false)
         std::cout << d.green("CompareNotTest: accepted") << std::endl;
     else std::cout << d.red("CompareNotTest: denied") << std::endl;
-}
-
-
-void NotEqual(){
-    String s1 = "hello";
-    String s2 = "hella";
-    if( s1 != s2){
-        std::cout << d.green("NotEqual: accepted") << std::endl;
-    }
-    else std::cout << d.red("NotEqual: denied") << std::endl;
 }
 
 void EmptyTest(){
@@ -115,9 +113,9 @@ void LowerTest(){
 int main(void){
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
     EqualTest();
+    NotEqual();
     CompareTest();
     CompareNotTest();
-    NotEqual();
     EmptyTest();
     EmptyOrWhiteSpaceTest();
     CopyTest();
