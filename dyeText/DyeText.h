@@ -65,7 +65,6 @@ class DyeText{
 
 
     public:
-        ~DyeText();
         std::string black(std::string str);
         std::string red(std::string str);
         std::string green(std::string str);

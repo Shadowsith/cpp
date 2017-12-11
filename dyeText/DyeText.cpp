@@ -2,10 +2,6 @@
 #include <string>
 #include <iostream>
 
-DyeText::~DyeText(){
-    delete this;
-}
-
 // foreground colors------------------------------------------------------
 
 std::string DyeText::black(std::string str){
