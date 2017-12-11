@@ -109,6 +109,27 @@ void LowerTest(){
     else std::cout << d.red("LowerTest: denied") << std::endl;
 }
 
+void FindTest(){
+    String s = "asd_das_dfs";
+    std::vector<int> vec = s.find("d");
+    if(vec[0] == 2 && vec[1] == 4 && vec[2] == 8)
+        std::cout << d.green("FindTest: accepted") << std::endl;
+    else std::cout << d.red("FindTest: denied") << std::endl;
+}
+
+void FindFirstTest(){
+    String s = "hello";
+    int pos = s.findFirst("l");
+    if(pos == 2){
+        pos = s.findFirst("e");
+        if(pos == 1){
+            std::cout << d.green("FindFirstTest: accepted") << std::endl;    
+        }
+        else std::cout << d.red("FindFirstTest: denied") << std::endl;
+    }
+    else std::cout << d.red("FindFirstTest: denied") << std::endl;
+}
+
 
 int main(void){
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
@@ -123,6 +144,8 @@ int main(void){
     SplitTest();
     UpperTest();
     LowerTest();
+    FindTest();
+    FindFirstTest();
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count();
