@@ -389,13 +389,38 @@ void String::eraseTail(int tailsize){
     m_str.erase(m_str.end()-tailsize, m_str.end());
 }
 
-std::vector<std::string>& String::split(const char c){
+std::vector<std::string>& String::split(const std::string delimiter){
     m_parts.clear();
-    std::stringstream ss(m_str);
-    while(std::getline(ss, m_str, c)){
-        m_parts.push_back(m_str);
+    std::size_t pos = 0;
+    std::string token;
+    std::string str = m_str;
+    while((pos = str.find(delimiter)) != std::string::npos){
+        token = str.substr(0,pos);
+        m_parts.push_back(token);
+        str.erase(0, pos + delimiter.length());
     }
+    m_parts.push_back(str);
     return m_parts;
+}
+
+std::vector<String> String::split(String& delimiter){
+    m_parts.clear();
+    std::vector<String> sParts;
+    std::size_t pos = 0;
+    std::string token;
+    std::string str = m_str;
+    while((pos = str.find(delimiter.get())) != std::string::npos){
+        token = str.substr(0,pos);
+        m_parts.push_back(token);
+        str.erase(0, pos + delimiter.get().length());
+    }
+    m_parts.push_back(str);
+
+    for (int i = 0; i < m_parts.size(); i++) {
+        String s(m_parts[i]);
+        sParts.push_back(s);
+    }
+    return sParts;
 }
 
 void String::toUpper(){
@@ -569,5 +594,3 @@ double String::toDouble(){
         std::cout << ex.what() << std::endl;
     }
 }
-
-

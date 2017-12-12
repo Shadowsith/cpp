@@ -85,10 +85,19 @@ void CopyToTest(){
 
 void SplitTest(){
     String s = "hi;bye;seeyousoon";
-    std::vector<std::string> vec = s.split(';');
+    std::vector<std::string> vec = s.split(";");
     if(vec[0].compare("hi") == 0 && vec[1].compare("bye") == 0 && vec[2].compare("seeyousoon") == 0)
         std::cout << d.green("SplitTest: accepted") << std::endl;
     else std::cout << d.red("SplitTest: denied") << std::endl;
+}
+
+void SplitTestString(){
+    String s = "hi--ho--ha";
+    String delimiter = "--";
+    std::vector<String> vec = s.split(delimiter);
+    if(vec[0].compare("hi") && vec[1].compare("ho") && vec[2].compare("ha"))
+        std::cout << d.green("SplitTestString: accepted") << std::endl;
+    else std::cout << d.red("SplitTestString: denied") << std::endl;
 }
 
 void UpperTest(){
@@ -142,6 +151,7 @@ int main(void){
     CopyTest();
     CopyToTest();
     SplitTest();
+    SplitTestString();
     UpperTest();
     LowerTest();
     FindTest();

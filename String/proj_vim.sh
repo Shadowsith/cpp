@@ -1,1 +1,1 @@
-vim String.h String.cpp -c vsplit
+vim -O String.h String.cpp

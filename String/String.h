@@ -89,7 +89,8 @@ class String{
         inline int indexOf(std::string find);
         int findLast(std::string find);
         inline int lastIndexOf(std::string find);
-        std::vector<std::string>& split (const char c);
+        std::vector<std::string>& split (const std::string delimiter);
+        std::vector<String> split (String& delimiter);
         void replace(std::string oldstr, std::string newstr);
         void replaceFirst(std::string oldstr, std::string newstr);
         void replaceLast(std::string oldstr, std::string newstr);
