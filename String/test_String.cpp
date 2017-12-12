@@ -130,6 +130,105 @@ void FindFirstTest(){
     else std::cout << d.red("FindFirstTest: denied") << std::endl;
 }
 
+void FindLastTest(){
+    String s = "hello";
+    int pos = s.findLast("o");
+    if( pos == 4){
+        pos = s.findLast("l");
+        if(pos == 3){
+            std::cout << d.green("FindLastTest: accepted") << std::endl;
+        }
+    }
+    else std::cout << d.red("FindLastTest: denied") << std::endl;
+}
+
+void TrimTest(){
+    String s = "     ";
+    String a = "  hello  ";
+    s.trim();
+    a.trim();
+    if(s.isEmpty() && a.compare("hello"))
+        std::cout << d.green("TrimTest: accepted") << std::endl;
+    else std::cout << d.red("TrimTest: denied") << std::endl;
+}
+
+void TrimLeftTest(){
+    String s = "      ";
+    String a = "  hello  ";
+    s.trimLeft();
+    a.trimLeft();
+    if(s.isEmpty() && a.compare("hello  "))
+        std::cout << d.green("TrimLeftTest: accepted") << std::endl;
+    else std::cout << d.red("TrimLeftTest: denied") << std::endl;
+}
+
+//TODO
+void TrimRightTest(){
+    String s = "      ";
+    String a = "  hello  ";
+    s.trimRight(); //does not trim all spaces:
+    a.trimRight();
+    if(s.isEmpty() && a.compare("  hello"))
+        std::cout << d.green("TrimRightTest: accepted") << std::endl;
+    else std::cout << d.red("TrimRightTest: denied") << std::endl;
+}
+
+void FillLeftTest(){
+    String s = "1";
+    s.fillLeft(3,'0');
+    if(s.compare("0001"))
+        std::cout << d.green("FillLeftTest: accepted") << std::endl;
+    else std::cout << d.red("FillRightTest: denied") << std::endl;
+}
+
+void FillRightTest(){
+    String s = "1";
+    s.fillRight(3,'0');
+    if(s.compare("1000"))
+        std::cout << d.green("FillRightTest: accepted") << std::endl;
+    else std::cout << d.red("FillRightTest: denied") << std::endl;
+}
+
+void EraseTest(){
+    String s = "Hello World! Hello Sun!";
+    s.erase("Hello ");
+    if(s.compare("World! Sun!"))
+        std::cout << d.green("EraseTest: accepted") << std::endl;
+    else std::cout << d.red("EraseTest: denied") << std::endl;
+}
+
+void EraseFirstTest(){
+    String s = "Hello World! Hello Sun!";
+    s.eraseFirst("Hello ");
+    if(s.compare("World! Hello Sun!"))
+        std::cout << d.green("EraseFirstTest: accepted") << std::endl;
+    else std::cout << d.red("EraseFirstTest: denied") << std::endl;
+}
+
+void EraseLastTest(){
+    String s = "Hello World! Hello Sun!";
+    s.eraseLast("Hello ");
+    if(s.compare("Hello World! Sun!"))
+        std::cout << d.green("EraseLastTest: accepted") << std::endl;
+    else std::cout << d.red("EraseLastTest: denied") << std::endl;     
+}
+
+void EraseHeadTest(){
+    String s = "12345678";
+    s.eraseHead(4);
+    if(s.compare("5678"))
+        std::cout << d.green("EraseHeadTest: accepted") << std::endl;
+    else std::cout << d.red("EraseHeadTest: denied") << std::endl;
+}
+
+void EraseTailTest(){
+    String s = "12345678";
+    s.eraseTail(4);
+    if(s == "1234")
+        std::cout << d.green("EraseTailTest: accepted") << std::endl;
+    else std::cout << d.red("EraseTailTest: denied") << std::endl;
+}
+
 
 int main(void){
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
@@ -146,6 +245,17 @@ int main(void){
     LowerTest();
     FindTest();
     FindFirstTest();
+    FindLastTest();
+    TrimTest();
+    TrimLeftTest();
+    TrimRightTest();
+    FillLeftTest();
+    FillRightTest();
+    EraseTest();
+    EraseFirstTest();
+    EraseLastTest();
+    EraseHeadTest();
+    EraseTailTest();
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count();
