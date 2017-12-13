@@ -40,6 +40,41 @@ void ConstructorTest(){
     else std::cout << d.red("Char based type constructors: denied") << std::endl;
 }
 
+void ConstructorAllocTest(){
+    std::vector<String*> vec;
+    String* str;
+    short s = 1;
+    int i = 1;
+    long l = 1;
+    float f = 1.1;
+    double dd = 1.1;
+    char c = 'a';
+    char chr[] = {'a','b','c'};
+    char* ch = chr;
+    std::string ss = "abc";
+
+    str = new String(s);
+    vec.push_back(str);
+    str = new String(i);
+    vec.push_back(str);
+    str = new String(l);
+    vec.push_back(str);
+    str = new String(f);
+    vec.push_back(str);
+    str = new String(dd);
+    vec.push_back(str);
+    str = new String(c);
+    vec.push_back(str);
+    str = new String(ch);
+    vec.push_back(str);
+    str = new String(ss);
+    vec.push_back(str);
+
+    for (int i = 0; i < vec.size(); i++) {
+       delete vec[i]; 
+    }
+}
+
 void EqualTest(){
     String s1 = "hello";
     String s2 = "hello";
@@ -277,6 +312,7 @@ void EraseTailTest(){
 int main(void){
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
     ConstructorTest();
+    ConstructorAllocTest();
     EqualTest();
     NotEqual();
     CompareTest();
