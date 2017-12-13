@@ -5,6 +5,41 @@
 
 DyeText d;
 
+void ConstructorTest(){
+    String str[8];
+    short s = 1;
+    int i = 1;
+    long l = 1;
+    float f = 1.1;
+    double dd = 1.1;
+    char c = 'a';
+    char chr[] = {'a','b','c'};
+    char* ch = chr;
+    std::string ss = "abc";
+
+    int it = 0;
+
+    str[0] = String(s); 
+    str[1] = String(i); 
+    str[2] = String(l); 
+    if(str[0].compare("1") && str[1].compare("1") && str[2].compare("1"))
+        std::cout << d.green("Integer Number Type Constructors: accepted") << std::endl;
+    else  std::cout << d.red("Integer Number Type Constructors: denied") << std::endl;
+
+    str[3] = String(f); 
+    str[4] = String(dd); 
+    if(str[3].compare("1.1") && str[4].compare("1.1"))
+        std::cout << d.green("Float point number type constructors: accepted") << std::endl;
+    else std::cout << d.red("Float point number type constructors: denied") << std::endl;
+
+    str[5] = String(c); 
+    str[6] = String(ch); 
+    str[7] = String(ss); 
+    if(str[5].compare("a") && str[6].compare("abc") && str[7].compare("abc"))
+        std::cout << d.green("Char based type constructors: accepted") << std::endl;
+    else std::cout << d.red("Char based type constructors: denied") << std::endl;
+}
+
 void EqualTest(){
     String s1 = "hello";
     String s2 = "hello";
@@ -241,6 +276,7 @@ void EraseTailTest(){
 
 int main(void){
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+    ConstructorTest();
     EqualTest();
     NotEqual();
     CompareTest();

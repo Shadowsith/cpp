@@ -12,15 +12,17 @@ class String{
         //constructors
         String();
 
-        String(const std::string str);
-        
+        String(const char c);
         String(const char* c);
+        String(const std::string str);
         
         String(std::vector<std::string> strvec);
         String(std::vector<char> cvec);
+
         String(short num);
         String(int num);
         String(long num);
+
         String(float num);
         String(double num);
         

@@ -13,11 +13,13 @@ String::String(){
     m_str = "";
 }
 
+String::String(const char c) : m_str(1,c) {}
+
+String::String(const char* c) : m_str(c) {}
+
 String::String(const std::string str){
     m_str = str;
 }
-
-String::String(const char* c) : m_str(c) {}
 
 String::String(std::vector<std::string> strvec){
     for(int i = 0; i < strvec.size(); i++){
@@ -46,10 +48,17 @@ String::String(long num){
 
 String::String(float num){
     m_str = std::to_string(num);
+    while(m_str.rfind("0") == m_str.length()-1){
+        m_str.erase(m_str.length()-1);
+    }
 }
 
 String::String(double num){
     m_str = std::to_string(num);
+    m_str = std::to_string(num);
+    while(m_str.rfind("0") == m_str.length()-1){
+        m_str.erase(m_str.length()-1);
+    }
 }
 
 //operators----------------------------
@@ -483,6 +492,7 @@ void String::trimLeft(){
 
 void String::trimRight(){
     std::string::size_type trimIt = m_str.length();
+    /* 
     for(std::string::size_type i = m_str.length()-1; i > 0; i--)
     {
         if(m_str[i] == ' '){
@@ -491,6 +501,15 @@ void String::trimRight(){
         else break;
     }
     m_str.erase(trimIt,m_str.length()-1);
+    */
+    
+    while(m_str.rfind(" ") == m_str.length()-1){
+        if(m_str.length() == 1){
+            m_str.erase(0);
+            break;
+        }
+        m_str.erase(m_str.length()-1);
+    }
 }
 
 void String::fillLeft(int length, char fill){
