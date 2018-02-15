@@ -329,6 +329,22 @@ int String::findLast(std::string find){
     }
 }
 
+void String::format(std::string formatText, std::vector<std::string> parameter){
+    if (!parameter.empty()) {
+        String s; 
+        s = formatText; 
+        for(int i = 0; i < parameter.size(); i++) {
+            String sI = i; 
+            String parNum =  "{" + sI + "}"; 
+            s.replaceFirst(parNum, parameter[i]); 
+            m_str = s; 
+        }
+    } 
+    else {
+        std::cout << "Parameter Vector is empty!" << std::endl; 
+    }
+}
+
 // alias from findLast, Java-String name
 int String::lastIndexOf(std::string find){
     String::findLast(find);
@@ -612,4 +628,13 @@ double String::toDouble(){
         std::cout << "Caught bad cast, reference is not from type float:" << std::endl;
         std::cout << ex.what() << std::endl;
     }
+}
+
+int main(void) {
+    String str;
+    std::vector<std::string> params;
+    params.push_back("Bla"); 
+    params.push_back("Noob");
+    str.format("Hallo {0}, du {1}", params); 
+    std::cout << str << std::endl;
 }

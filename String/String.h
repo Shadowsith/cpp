@@ -91,6 +91,7 @@ class String{
         inline int indexOf(std::string find);
         int findLast(std::string find);
         inline int lastIndexOf(std::string find);
+        void format(std::string formatText, std::vector<std::string> parameter);
         std::vector<std::string>& split (const std::string delimiter);
         std::vector<String> split (String& delimiter);
         void replace(std::string oldstr, std::string newstr);
